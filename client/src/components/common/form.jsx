@@ -53,7 +53,7 @@ function CommonForm({ formControls, formData, setFormData, onSubmit, buttonText 
           <Textarea
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
-            id={getControlItem.id}
+            id={getControlItem.name}
             value={value}
             onChange={(event)=> setFormData( {
                 ...formData, 
@@ -86,7 +86,7 @@ function CommonForm({ formControls, formData, setFormData, onSubmit, buttonText 
       <div className="flex flex-col gap-3">
         {formControls.map((controlItem) => (
           <div className="grid w-full gap-1.5" key={controlItem.name}>
-            <Label className="mb-1">{controlItem.Label} </Label>
+            <Label className="mb-1">{controlItem.label} </Label>
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
