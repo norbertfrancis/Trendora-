@@ -63,7 +63,7 @@ export const addProductFormElements = [
             {id: "woman", label: "Women"},
             {id: "kids", label: "Kids"},
             {id: "accessories", label:"Accessories"},
-            {id: "footewear", label: "Footwear"},
+            {id: "footwear", label: "Footwear"},
         ],
     },
     {
