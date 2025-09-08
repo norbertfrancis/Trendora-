@@ -6,13 +6,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-
 const initialState = {
   email : '',
   password : ''
 }
-
-
 function AuthLogin() {
      const [formData, setFormData] = useState(initialState)
      const dispatch = useDispatch();
