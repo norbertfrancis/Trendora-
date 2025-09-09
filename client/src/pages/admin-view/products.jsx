@@ -11,8 +11,9 @@ import { useEffect, useState } from "react";
 import CommonForm from "@/components/common/form";
 import ProductImageUpload from "@/components/admin-view/image-upload";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllProducts } from "@/store/admin/product-slice";
-
+import { addNewProduct, fetchAllProducts } from "@/store/admin/product-slice";
+import { useToast } from "@/hooks/use-toast";
+import AdminProductTile from "./product-tile";
 
 const initialFormData = {
   image: null,
@@ -21,7 +22,7 @@ const initialFormData = {
   category: "",
   brand: "",
   price: "",
-  salesPrice: "", 
+  salePrice: "",
   totalStock: "",
 };
 
@@ -31,22 +32,40 @@ const AdminProducts = () => {
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
-  const [imageLoadingState,setImageLoadingState] = useState(false)
-  const {productList} = useSelector(state=>state.adminProducts)
+  const [imageLoadingState, setImageLoadingState] = useState(false);
+  const { productList } = useSelector((state) => state.adminProducts);
   const dispatch = useDispatch();
-
+  const { toast } = useToast();
 
   const onSubmit = (event) => {
     event.preventDefault();
-
+    if (!uploadedImageUrl) {
+    toast({ title: "Please wait, image is still uploading." });
+    return;
+  }
+    dispatch(
+      addNewProduct({
+        ...formData,
+        image: uploadedImageUrl,
+      })
+    ).then((data) => {
+      console.log(data);
+      if (data?.payload?.success) {
+        dispatch(fetchAllProducts());
+        setOpenCreateProductsDialog(false);
+        setImageFile(null);
+        setFormData(initialFormData);
+        toast({
+          title: "Product add successfully",
+        });
+      }
+    });
   };
   useEffect(() => {
-    dispatch(fetchAllProducts())
-  },[dispatch])
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
 
-  console.log(productList, 'productList')
-
-
+  console.log(productList, "productList");
 
   return (
     <>
@@ -56,7 +75,13 @@ const AdminProducts = () => {
           Add New Products
         </Button>
       </div>
-      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4"></div>
+      <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {productList && productList.length > 0
+          ? productList.map((productItem) => (
+              <AdminProductTile key={productItem._id} product={productItem} />
+            ))
+          : null}
+      </div>
 
       <Sheet
         open={openCreateProductsDialog}

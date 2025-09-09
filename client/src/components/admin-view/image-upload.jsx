@@ -38,23 +38,32 @@ function ProductImageUpload({
   console.log(imageFile);
 
   async function uploadImageToCloudinary() {
+  try {
     setImageLoadingState(true);
     const data = new FormData();
     data.append("my_file", imageFile);
+
     const response = await axios.post(
       "http://localhost:5000/api/admin/products/upload-image",
-      data
+      data,
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
+
     console.log(response, "response");
 
     if (response?.data?.success) {
       setUploadedImageUrl(response.data.result.url);
-      setImageLoadingState(false);
     }
+  } catch (error) {
+    console.error("Image upload failed:", error);
+  } finally {
+    setImageLoadingState(false);
   }
+}
+
   useEffect(() => {
     if (imageFile !== null) uploadImageToCloudinary();
-  });
+  },[imageFile]);
 
   return (
     <div className="w-full max-w-md mx-auto m-4">
@@ -81,7 +90,7 @@ function ProductImageUpload({
           </Label>
         ) : (
           imageLoadingState ? 
-          <Skeleton className='h-1- bg-gray-100'/> :
+          <Skeleton className='h-10 w-full bg-gray-100'/> :
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <FileIcon className="w-8 text-primary mr-2 h-8" />

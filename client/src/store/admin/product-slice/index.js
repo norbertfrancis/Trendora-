@@ -50,7 +50,7 @@ export const deleteProduct = createAsyncThunk(
   "/products/deleteProduct",
   async (id) => {
     const result = await axios.delete(
-      `http://localhost:5000/api/admin/products/add/delete/${id}`,
+      `http://localhost:5000/api/admin/products/delete/${id}`,
      
     );
     return result?.data;
@@ -66,14 +66,14 @@ const AdminProductSlice = createSlice({
         state.isLoading = true;
     })
     .addCase(fetchAllProducts.fulfilled, (state,action)=> {
-        console.log(action.payload)
         state.isLoading = false
         state.productList = action.payload.data
     })
-    .addCase(fetchAllProducts.rejected, (state,action)=> {
+    .addCase(fetchAllProducts.rejected, (state)=> {
         state.isLoading = false
         state.productList = []
     })
+
   },
 });
 

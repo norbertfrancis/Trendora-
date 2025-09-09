@@ -6,8 +6,8 @@ const { find } = require("../../models/User");
 const handleImageUpload = async (req, res) => {
     try {
         const b64 = Buffer.from(req.file.buffer).toString('base64');
-        const url = 'data' + req.file.mimetype + ";base64," + b64;
-        // const url = `data:${req.file.mimetype};base64,${b64}`;
+        // const url = 'data' + req.file.mimetype + ";base64," + b64;
+        const url = `data:${req.file.mimetype};base64,${b64}`;
         const result = await imageUploadUtils(url);
 
         res.json({
@@ -31,6 +31,8 @@ const addProduct = async(req, res) => {
         const newlyCreatedProduct = new Product({
             image,title,description,category,brand,price,salePrice,totalStock
         })
+        console.log("Saving product with image:", image);
+
         await newlyCreatedProduct.save();
         res.status(201).json({
             success: true,
@@ -80,7 +82,7 @@ const editProduct = async(req, res) => {
             findeProduct.category = category || findeProduct.category
             findeProduct.brand = brand || findeProduct.brand
             findeProduct.price = price || findeProduct.price
-            findeProduct.salesPrice = salePrice ||  findeProduct.salesPrice
+            findeProduct.salePrice = salePrice ||  findeProduct.salePrice
             findeProduct.totalStock = totalStock || findeProduct.totalStock
             findeProduct.image = image || findeProduct.image
 
@@ -104,7 +106,7 @@ const editProduct = async(req, res) => {
 const deleteProduct = async(req, res) => {
     try {
         const {id} = req.params
-        const product = await Product.findByIdAndUpdate(id);
+        const product = await Product.findByIdAndDelete(id);
 
         if(!product)
             return res.status(404).json({
