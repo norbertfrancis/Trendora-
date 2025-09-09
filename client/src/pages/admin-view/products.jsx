@@ -13,12 +13,12 @@ import ProductImageUpload from "@/components/admin-view/image-upload";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addNewProduct,
+  deleteProduct,
   editProduct,
   fetchAllProducts,
 } from "@/store/admin/product-slice";
 import { useToast } from "@/hooks/use-toast";
 import AdminProductTile from "./product-tile";
-import { data } from "react-router-dom";
 
 const initialFormData = {
   image: null,
@@ -55,11 +55,11 @@ const AdminProducts = () => {
         ).then((data) => {
           console.log(data, "edit");
 
-          if(data?.payload?.success){
-            dispatch(fetchAllProducts())
-            setFormData(initialFormData)
-            setOpenCreateProductsDialog(false)
-            setCurrentEditedId(null)
+          if (data?.payload?.success) {
+            dispatch(fetchAllProducts());
+            setFormData(initialFormData);
+            setOpenCreateProductsDialog(false);
+            setCurrentEditedId(null);
           }
         })
       : dispatch(
@@ -80,6 +80,21 @@ const AdminProducts = () => {
           }
         });
   };
+
+  function handleDelete(getCurrentProductId) {
+    dispatch(deleteProduct(getCurrentProductId)).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(fetchAllProducts());
+      }
+    });
+  }
+
+  function isFormValid() {
+    return Object.keys(formData)
+      .map((key) => formData[key] !== "")
+      .every((item) => item);
+  }
+
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
@@ -103,6 +118,7 @@ const AdminProducts = () => {
                 setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                 setCurrentEditedId={setCurrentEditedId}
                 product={productItem}
+                handleDelete={handleDelete}
               />
             ))
           : null}
@@ -141,6 +157,7 @@ const AdminProducts = () => {
               setFormData={setFormData}
               buttonText={currentEditedId !== null ? "Edit" : "Add"}
               formControls={addProductFormElements}
+              isBtnDisabled={!isFormValid()}
             />
           </div>
         </SheetContent>

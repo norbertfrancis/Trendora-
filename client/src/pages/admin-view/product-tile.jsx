@@ -6,6 +6,7 @@ function AdminProductTile({
   setFormData,
   setOpenCreateProductsDialog,
   setCurrentEditedId,
+  handleDelete,
 }) {
   return (
     <Card className="w-full max-w-sm mx-auto">
@@ -21,7 +22,7 @@ function AdminProductTile({
           <h2 className="text-xl font-bold mb-2 mt-2 ">{product?.title}</h2>
           <div className="flex justify-between items-center mb-2">
             <span
-              className={`${
+              className={`${ 
                 product?.salePrice > 0 ? "line-through" : ""
               }text-lg font-semibold test-primary`}
             >
@@ -43,7 +44,7 @@ function AdminProductTile({
           >
             Edit
           </Button>
-          <Button>Delete</Button>
+          <Button onClick={()=> handleDelete(product?._id)}>Delete</Button>
         </CardFooter>
       </div>
     </Card>
