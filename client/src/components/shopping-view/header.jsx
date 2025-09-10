@@ -38,7 +38,7 @@ const HeaderRightContent = () => {
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logoutUser());
-  }; 
+  };
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
@@ -74,7 +74,7 @@ const HeaderRightContent = () => {
 };
 
 function ShoppingHeader() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  //   const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
     <header className="sticky top=0 z-40 w-full border-b bg-background">
@@ -92,17 +92,16 @@ function ShoppingHeader() {
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-xs">
             <MenuItems />
-            <HeaderRightContent/>
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block">
           <MenuItems />
         </div>
 
-          <div className="hidden lg:block">
-            <HeaderRightContent />
-          </div>
-       
+        <div className="hidden lg:block">
+          <HeaderRightContent />
+        </div>
       </div>
     </header>
   );
