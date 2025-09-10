@@ -120,12 +120,12 @@ export const shoppingViewHeaderMenuItmes = [
     {
         id: 'kids',
         label: 'Kids',
-        path: '/path/listing'
+        path: '/shop/listing'
     },
     {
         id: 'footwear',
         label: 'Footwear',
-        path: '/path/listing'
+        path: '/shop/listing'
     },
     {
         id: 'accessories',
