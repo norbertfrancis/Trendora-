@@ -1,4 +1,5 @@
 import ProductFilter from "@/components/shopping-view/filter";
+import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,15 +9,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
+import { fetchAllFilterdProducts } from "@/store/shop/product-slice";
 
 import { ArrowUpDownIcon } from "lucide-react";
+import { useEffect } from "react";
 
-import { useDispatch } from "react-redux";
-
-const dispatch = useDispatch()
-
+import { useDispatch, useSelector } from "react-redux";
 
 function ShoppingListing() {
+  const dispatch = useDispatch();
+  const { productList } = useSelector((state) => state.shopProducts);
+
+  useEffect(() => {
+    dispatch(fetchAllFilterdProducts());
+  }, [dispatch]);
+  console.log(productList);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter />
@@ -48,8 +56,11 @@ function ShoppingListing() {
             </DropdownMenu>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+            {
+                productList && productList.length > 0 ?
+                productList.map(productItem=> <ShoppingProductTile product={productItem}/>) : null
+            }
         </div>
       </div>
     </div>

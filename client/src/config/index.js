@@ -134,6 +134,23 @@ export const shoppingViewHeaderMenuItmes = [
     }
 
 ];
+export const categoryOptionsMap = {
+    'men' : 'Men',
+    'women' : 'Woman',
+    'kids' : 'Kids',
+    'accessories' : 'Accessories',
+    'footwear' : 'Footwear',
+} 
+export const brandOptionsMap = {
+    'nike' : 'Nike',
+    'adidas' : 'Adidas',
+    'puma' : 'Puma',
+    'levi' : "Levi's",
+    'zara': 'Zara',
+    'h&m' : 'H&M'
+}
+
+
 export const filterOptions = {
     category: [
         {id: "men", label: "Men"},
