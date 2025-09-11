@@ -8,7 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
+
 import { ArrowUpDownIcon } from "lucide-react";
+
+import { useDispatch } from "react-redux";
+
+const dispatch = useDispatch()
+
 
 function ShoppingListing() {
   return (
