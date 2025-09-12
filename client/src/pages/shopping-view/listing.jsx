@@ -63,7 +63,7 @@ function ShoppingListing() {
     setSort("price-lowtohigh")
     setFilters(JSON.parse(sessionStorage.getItem('filters')) || {})
   },[]);
-
+ 
   useEffect(() => {
     if(filters && Object.keys(filters).length > 0){
       const createQueryString = createSearchParamsHelper(filters);
@@ -73,8 +73,9 @@ function ShoppingListing() {
 
 
   useEffect(() => {
-    dispatch(fetchAllFilterdProducts());  
-  }, [dispatch]);
+    if(filters !== null && sort !== null)
+    dispatch(fetchAllFilterdProducts({filterParams : filters,sortParams: sort}));  
+  }, [dispatch, sort, filters]);
   console.log(filters, "filters");
 
   return (
