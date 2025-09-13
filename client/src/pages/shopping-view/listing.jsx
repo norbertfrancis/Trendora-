@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
-import { fetchAllFilterdProducts } from "@/store/shop/product-slice";
+import { fetchAllFilterdProducts, fetchProductDetails } from "@/store/shop/product-slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +31,7 @@ const createSearchParamsHelper = (filterParams) => {
 
 function ShoppingListing() {
   const dispatch = useDispatch();
-  const { productList } = useSelector((state) => state.shopProducts);
+  const { productList, productDetails } = useSelector((state) => state.shopProducts);
   const [filters, setFilters] = useState({})
   const [sort, setSort] = useState(null)
   const [searchParams, setSearchParams] = useSearchParams()
@@ -58,6 +58,11 @@ function ShoppingListing() {
     setFilters(cpyFilters)
     sessionStorage.setItem('filters', JSON.stringify(cpyFilters));
   }
+  const handleGetProductDetails = (getCurrentProductId) => {
+      console.log("getCurrentProductId", getCurrentProductId)
+      dispatch(fetchProductDetails(getCurrentProductId))
+
+  }
 
   useEffect(() => {
     setSort("price-lowtohigh")
@@ -76,7 +81,8 @@ function ShoppingListing() {
     if(filters !== null && sort !== null)
     dispatch(fetchAllFilterdProducts({filterParams : filters,sortParams: sort}));  
   }, [dispatch, sort, filters]);
-  console.log(filters, "filters");
+
+  console.log("productDetails", productDetails);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
@@ -112,7 +118,7 @@ function ShoppingListing() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
             {
                 productList && productList.length > 0 ?
-                productList.map(productItem=> <ShoppingProductTile product={productItem}/>) : null
+                productList.map(productItem=> <ShoppingProductTile handleGetProductDetails={handleGetProductDetails} product={productItem}/>) : null
             }
         </div>
       </div>
