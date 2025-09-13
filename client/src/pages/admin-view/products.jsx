@@ -155,7 +155,7 @@ const AdminProducts = () => {
               onSubmit={onSubmit}
               formData={formData}
               setFormData={setFormData}
-              buttonText={currentEditedId !== null ? "Edit" : "Add"}
+              buttonText={currentEditedId !== null ? "Save" : "Add"}
               formControls={addProductFormElements}
               isBtnDisabled={!isFormValid()}
             />
