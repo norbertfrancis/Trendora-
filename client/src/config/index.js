@@ -145,7 +145,7 @@ export const brandOptionsMap = {
     'nike' : 'Nike',
     'adidas' : 'Adidas',
     'puma' : 'Puma',
-    'levi' : "Levi's",
+    'levis' : "Levi's",
     'zara': 'Zara',
     'h&m' : 'H&M'
 }
@@ -163,7 +163,7 @@ export const filterOptions = {
         {id: "nike", label: "Nike"},
         {id: "adidas", label: "Adidas"},
         {id: "puma", label: "Puma"},
-        {id: "levi", label: "Levis's"},
+        {id: "levis", label: "Levi's"},
         {id: "zara",label: "Zara" },
         {id: "h&m", label: "H&M"}
     ],
@@ -172,6 +172,6 @@ export const sortOptions = [
     {id: "price-lowtohigh", label:"Price: Low to High"},
     {id: "price-hightolow", label:"Price: High to Low"},
     {id: "title-atoz", label: "Title: A to Z"},
-    {id: "title-ztoz", label: "Title: Z to A"},
+    {id: "title-ztoa", label: "Title: Z to A"},
 ];
 

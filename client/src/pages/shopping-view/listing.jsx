@@ -29,7 +29,6 @@ const createSearchParamsHelper = (filterParams) => {
     return queryParams.join('&')
 }
 
-
 function ShoppingListing() {
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector((state) => state.shopProducts);
