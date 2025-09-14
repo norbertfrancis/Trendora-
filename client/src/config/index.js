@@ -60,7 +60,7 @@ export const addProductFormElements = [
         componentType: "select",
         options: [
             {id: "men", label: "Men"},
-            {id: "woman", label: "Women"},
+            {id: "women", label: "Women"},
             {id: "kids", label: "Kids"},
             {id: "accessories", label:"Accessories"},
             {id: "footwear", label: "Footwear"},
@@ -136,7 +136,7 @@ export const shoppingViewHeaderMenuItmes = [
 ];
 export const categoryOptionsMap = {
     'men' : 'Men',
-    'women' : 'Woman',
+    'women' : 'Women',
     'kids' : 'Kids',
     'accessories' : 'Accessories',
     'footwear' : 'Footwear',
