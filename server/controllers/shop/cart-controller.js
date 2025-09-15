@@ -139,9 +139,9 @@ const updateCartItemQty = async(req, res) => {
         const populateCartItems = cart.items.map((item) => ({
             productId: item.productId ? item.productId._id : null,
             image: item.productId ? item.productId.image : null,
-            title: item.productId ? item.title : 'Product not found',
-            price: item.productId ? item.price : null,
-            salePrice : item.productId ? item.salePrice : null,
+            title: item.productId ? item.productId.title : 'Product not found',
+            price: item.productId ? item.productId.price : null,
+            salePrice : item.productId ? item.productId.salePrice : null,
             quantity : item.quantity,
         }))
         res.status(200).json({
@@ -192,9 +192,16 @@ const deleteCartItem = async(req, res)=> {
             image: item.productId ? item.productId.image : null,
             title: item.productId ? item.productId.title : 'Product not found',
             price: item.productId ? item.productId.price : null,
-            salesPrice : item.productId ? item.productId.salePrice : null,
+            salePrice : item.productId ? item.productId.salePrice : null,
             quantity: item.quantity,
         }))
+        res.status(200).json({
+            success: true,
+            data: {
+                ...cart._doc,
+                items: populateCartItems,
+            }
+        })
         
     } catch (error) {
         console.log(error)
