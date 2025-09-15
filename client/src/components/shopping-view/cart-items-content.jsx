@@ -25,7 +25,7 @@ function UserCartItemsContent({ cartItem }) {
     ).then((data) => {
       if (data?.payload?.success) {
         toast({
-          title: "Cart updated ",
+          title: "Cart updated SuccessFully",
         });
       }
     });
