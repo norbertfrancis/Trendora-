@@ -10,11 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { sortOptions } from "@/config";
+import { addToCart } from "@/store/shop/cart-slice/cart-slice";
 import { fetchAllFilterdProducts, fetchProductDetails } from "@/store/shop/product-slice";
 import { ArrowUpDownIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useSearchParams } from "react-router-dom";
+import {  data, useSearchParams } from "react-router-dom";
 
 const createSearchParamsHelper = (filterParams) => {
     const queryParams = []
@@ -31,6 +32,7 @@ const createSearchParamsHelper = (filterParams) => {
 
 function ShoppingListing() {
   const dispatch = useDispatch();
+  const {user} = useSelector(state => state.auth)
   const { productList, productDetails } = useSelector((state) => state.shopProducts);
   const [filters, setFilters] = useState({})
   const [sort, setSort] = useState(null)
@@ -63,7 +65,10 @@ function ShoppingListing() {
   const handleGetProductDetails = (getCurrentProductId) => {
       console.log("getCurrentProductId", getCurrentProductId)
       dispatch(fetchProductDetails(getCurrentProductId))
-
+  }
+  const handleAddToCart = (getCurrentProductId) => {
+    console.log(getCurrentProductId)
+    dispatch(addToCart({userId:user?.id, productId: getCurrentProductId, quantity: 1})).then(data=> console.log(data))
   }
 
   useEffect(() => {
@@ -88,7 +93,6 @@ function ShoppingListing() {
     if(productDetails !== null) setOpenDetailsDialog(true)
   },[productDetails])
 
-  console.log("productDetails", productDetails);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
@@ -124,7 +128,9 @@ function ShoppingListing() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
             {
                 productList && productList.length > 0 ?
-                productList.map(productItem=> <ShoppingProductTile handleGetProductDetails={handleGetProductDetails} product={productItem}/>) : null
+                productList.map(productItem=> <ShoppingProductTile handleGetProductDetails={handleGetProductDetails} product={productItem}
+                handleAddToCart={handleAddToCart}
+                />) : null
             }
         </div>
       </div>

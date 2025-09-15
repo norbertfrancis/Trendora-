@@ -14,6 +14,8 @@ import {
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { logoutUser } from "@/store/auth-slice";
+import UserCartWrapper from "./cart-wrapper";
+import { useState } from "react";
 
 const MenuItems = () => {
   return (
@@ -33,8 +35,8 @@ const MenuItems = () => {
 
 const HeaderRightContent = () => {
   const { user } = useSelector((state) => state.auth);
+  const[openCartSheet, setOpenCartSheets] = useState(false)
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -43,10 +45,14 @@ const HeaderRightContent = () => {
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       {/* take the dropDown menu */}
-      <Button variant="outline" size="icon">
+      <Sheet open={openCartSheet} onOpenChange={()=> setOpenCartSheets(false)}>
+        <Button onClick={()=> setOpenCartSheets(true)} variant="outline" size="icon">
         <ShoppingCart className="w-6 h-6" />
         <span className="sr-only">User cart</span>
       </Button>
+      <UserCartWrapper/>
+      </Sheet>
+      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">

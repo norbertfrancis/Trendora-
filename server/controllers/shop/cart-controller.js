@@ -21,7 +21,7 @@ const addToCart = async(req, res)=> {
                 message: 'Product not found'
             })
         }
-        let cart = await Cart.findById({userId})
+        let cart = await Cart.findOne({userId})
 
         if(!cart) {
             cart = new Cart({userId, items : []})
@@ -38,7 +38,7 @@ const addToCart = async(req, res)=> {
         await cart.save();
         res.status(200).json({
             success: true,
-            data : Product.create
+            data : cart
         })
            
     } catch (error) {
@@ -61,7 +61,7 @@ const fetchCartItmes = async(req, res)=> {
             })
         }
         const cart = await Cart.findOne({userId}).populate({
-            path : 'item.productId',
+            path : 'items.productId',
             select : "image title price salePrice"
         })
         if(!cart) {
@@ -121,7 +121,7 @@ const updateCartItemQty = async(req, res) => {
                 message : "Cart not found !",
             })
         }
-        const findCurrentProductIndex = cart.items.findOne(item=> item.productId.toString() === productId);
+        const findCurrentProductIndex = cart.items.findIndex(item=> item.productId.toString() === productId);
 
         if(findCurrentProductIndex === -1){
             return res.status(404).json({
@@ -183,7 +183,7 @@ const deleteCartItem = async(req, res)=> {
 
         await cart.save();
 
-        await Cart.populate({
+        await cart.populate({
             path: "items.productId",
             select: "image title price salePrice",
         })
@@ -195,9 +195,6 @@ const deleteCartItem = async(req, res)=> {
             salesPrice : item.productId ? item.productId.salePrice : null,
             quantity: item.quantity,
         }))
-
-
-
         
     } catch (error) {
         console.log(error)
