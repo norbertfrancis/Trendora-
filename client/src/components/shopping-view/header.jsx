@@ -17,18 +17,28 @@ import { logoutUser } from "@/store/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice/cart-slice";
+import { Label } from "../ui/label";
 
 const MenuItems = () => {
+
+  const navigate = useNavigate()
+
+  const handleNavigate = (getCurrentMenuItem) => {
+    sessionStorage.removeItem('filters')
+    const currentFilter = getCurrentMenuItem.id !== 'home' ? 
+    {
+      category : [getCurrentMenuItem.id]
+    } : null
+
+    sessionStorage.setItem('filters', JSON.stringify(currentFilter))
+    navigate(getCurrentMenuItem.path)
+  }
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItmes.map((menuItem) => (
-        <Link
-          className="text-sm font-medium"
-          key={menuItem.id}
-          to={menuItem.path}
-        >
+        <Label onClick={() => handleNavigate(menuItem)} className="text-sm font-medium cursor-pointer" key={menuItem.id}>
           {menuItem.label}
-        </Link>
+        </Label>
       ))}
     </nav>
   );
@@ -36,8 +46,8 @@ const MenuItems = () => {
 
 const HeaderRightContent = () => {
   const { user } = useSelector((state) => state.auth);
-  const {cartItems} = useSelector((state) => state.shopCart)
-  const[openCartSheet, setOpenCartSheets] = useState(false)
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const [openCartSheet, setOpenCartSheets] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -46,19 +56,29 @@ const HeaderRightContent = () => {
 
   useEffect(() => {
     dispatch(fetchCartItems(user?.id));
-  },[dispatch])
+  }, [dispatch]);
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       {/* take the dropDown menu */}
-      <Sheet open={openCartSheet} onOpenChange={()=> setOpenCartSheets(false)}>
-        <Button onClick={()=> setOpenCartSheets(true)} variant="outline" size="icon">
-        <ShoppingCart className="w-6 h-6" />
-        <span className="sr-only">User cart</span>
-      </Button>
-      <UserCartWrapper cartItems={cartItems && cartItems.items && cartItems.items.length > 0 ? cartItems.items : [] }/>
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheets(false)}>
+        <Button
+          onClick={() => setOpenCartSheets(true)}
+          variant="outline"
+          size="icon"
+        >
+          <ShoppingCart className="w-6 h-6" />
+          <span className="sr-only">User cart</span>
+        </Button>
+        <UserCartWrapper
+          cartItems={
+            cartItems && cartItems.items && cartItems.items.length > 0
+              ? cartItems.items
+              : []
+          }
+        />
       </Sheet>
-      
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
