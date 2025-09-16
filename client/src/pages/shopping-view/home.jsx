@@ -4,36 +4,64 @@ import bannerThree from "../../assets/BannerThree.webp";
 import { Button } from "@/components/ui/button";
 import {
   BabyIcon,
+  Cannabis,
   ChevronLeftIcon,
   ChevronRightIcon,
   CloudLightningIcon,
+  CupSoda,
+  Grape,
+  Origami,
+  Shirt,
   ShirtIcon,
+  Tractor,
   Umbrella,
   WatchIcon,
 } from "lucide-react";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllFilterdProducts } from "@/store/shop/product-slice";
+import ShoppingProductTile from "@/components/shopping-view/product-tile";
+
+const categoriesWithIcon = [
+  { id: "men", label: "Men", icon: ShirtIcon },
+  { id: "women", label: "Women", icon: CloudLightningIcon },
+  { id: "kids", label: "Kids", icon: BabyIcon },
+  { id: "accessories", label: "Accessories", icon: WatchIcon },
+  { id: "footwear", label: "Footwear", icon: Umbrella },
+];
+const brandsWithIcon = [
+        {id: "nike", label: "Nike", icon: Shirt},
+        {id: "adidas", label: "Adidas", icon: Cannabis },
+        {id: "puma", label: "Puma", icon: CupSoda },
+        {id: "levis", label: "Levi's", icon: Grape },
+        {id: "zara",label: "Zara", icon: Origami },
+        {id: "h&m", label: "H&M", icon: Tractor}
+];
 
 function ShoppingHome() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const { productList } = useSelector((state) => state.shopProducts);
+  const dispatch = useDispatch();
   const slides = [bannerOne, bannerTwo, bannerThree];
 
-  const [currentSlide, setCurrentSlide] = useState(0);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
+    }, 4000);
 
-  const categoriesWithIcon = [
-    { id: "men", label: "Men", icon: ShirtIcon },
-    { id: "women", label: "Women", icon: CloudLightningIcon },
-    { id: "kids", label: "Kids", icon: BabyIcon },
-    { id: "accessories", label: "Accessories", icon: WatchIcon },
-    { id: "footwear", label: "Footwear", icon: Umbrella },
-  ];
+    return () => clearInterval(timer);
+  }, []);
 
-  useEffect(()=> {
-      const timer = setInterval(()=> {
-        setCurrentSlide(prevSlide=> (prevSlide + 1)% slides.length)
-      },3000)
-
-      return ()=> clearInterval(timer)
-  },[])
+  useEffect(() => {
+    dispatch(
+      fetchAllFilterdProducts({
+        filterParams: {},
+        sortParams: "price-lowtohigh",
+      })
+    );
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -42,7 +70,9 @@ function ShoppingHome() {
           <img
             src={slide}
             key={index}
-            className={`${index === currentSlide ? 'opacity-100' : 'opacity-0' } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
+            className={`${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
           />
         ))}
         <Button
@@ -85,6 +115,41 @@ function ShoppingHome() {
           </div>
         </div>
       </section>
+
+            <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mt-8">
+            Shop by Brand
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {brandsWithIcon.map((brandItem) => (
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                <CardContent className="flex flex-col items-center justify-center p-6">
+                  <brandItem.icon className="w-12 h-12 mb-4 text-primary" />
+                  <span className="font-bold">{brandItem.label}</span>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            Feature Products
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {
+              productList && productList.length > 0 ?
+              productList.slice(0,8).map(productItem=> <ShoppingProductTile key={productItem.id} product={productItem}/> )
+              : null
+            }
+          </div>
+        </div>
+      </section>
+
+
     </div>
   );
 }
