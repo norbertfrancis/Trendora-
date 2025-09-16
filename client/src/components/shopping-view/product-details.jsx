@@ -15,7 +15,7 @@ function ProductDetailsDialog({open, setOpen, productDetails}) {
     const {user} = useSelector(state=> state.auth)
     const {toast} = useToast()
 
-    const handleAddToCart = (getCurrentProductId) => {
+    const handleAddToCart = (getCurrentProductId) => { 
         dispatch(
             addToCart({
                 userId: user?.id,
