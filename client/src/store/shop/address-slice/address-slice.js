@@ -76,7 +76,29 @@ const addressSlice = createSlice({
       .addCase(fetchAllAddresses.rejected, (state) => {
         state.isLoading = false;
         state.addressList = [];
-      });
+      })
+      .addCase(editaAddress.pending, (state)=> {
+        state.isLoading = true;
+      })
+      .addCase(editaAddress.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.addressList = action.payload.data;
+      })
+      .addCase(editaAddress.rejected, (state)=> {
+        state.isLoading = false
+        state.addressList = []
+      })
+      .addCase(deleteAddress.pending, (state)=> {
+        state.isLoading = true
+      })
+      .addCase(deleteAddress.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.addressList = action.payload.data
+      })
+      .addCase(deleteAddress.rejected, (state) => {
+        state.isLoading = false
+        state.addressList = []
+      })
   },
 });
 
