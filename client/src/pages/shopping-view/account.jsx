@@ -1,5 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import accImage from "../../assets/bg chat.jpg";
+import Orders from "./orders";
+import Address from "./address";
 
 function ShoppingAccount() {
   return (
@@ -14,12 +16,12 @@ function ShoppingAccount() {
         <div className="flex flex-col rounded-lg border bg-background p-6 shadow-sm">
             <Tabs defaultValue="orders">
                 <TabsList>
-                    <TabsTrigger value="orders"> Orders</TabsTrigger>
+                    <TabsTrigger value="orders">Orders</TabsTrigger>
                     <TabsTrigger value="address">Address</TabsTrigger>    
                     
                 </TabsList>
-                <TabsContent value="orders">orders Content</TabsContent>
-                <TabsContent value="address">address content</TabsContent>
+                <TabsContent value="orders"><Orders/></TabsContent>
+                <TabsContent value="address"><Address/></TabsContent>
 
             </Tabs>
         </div>
