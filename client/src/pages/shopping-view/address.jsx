@@ -1,17 +1,9 @@
 import CommonForm from "@/components/common/form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { addressFormControls } from "@/config";
-import { useState } from "react";
-
-function Address() {
-  const handleManageAddress = (e) => {
-    e.preventDefault();
-  };
-  const isFormValid = () => {
-    return Object.keys(formData)
-      .map((key) => formData[key].trim() !== "")
-      .every((item) => item);
-  };
+import { addNewAddress, fetchAllAddresses } from "@/store/shop/address-slice/address-slice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
   const initialAddressFormData = {
     address: "",
@@ -22,7 +14,40 @@ function Address() {
     notes: "",
   };
 
+function Address() {
   const [formData, setFormData] = useState(initialAddressFormData);
+  const {user} = useSelector((state) => state.auth);
+  const {addressList} = useSelector((state) => state.shopAddress);
+
+  const dispatch = useDispatch();
+
+  const handleManageAddress = (e) => {
+    e.preventDefault();
+    dispatch(addNewAddress({
+        ...formData,
+        userId : user?.id 
+    })).then(data=> {
+        console.log(data);
+        if(data?.payload?.success) {
+            dispatch(fetchAllAddresses(user?.id))
+            setFormData(initialAddressFormData)
+        }
+    });
+  };
+
+  const isFormValid = () => {
+    return Object.keys(formData)
+      .map((key) => formData[key].trim() !== "")
+      .every((item) => item);
+  };
+
+  useEffect(()=> {
+    dispatch(fetchAllAddresses(user?.id))
+  },[dispatch])
+ 
+
+
+ 
   return (
     <Card>
       <div>Address Lists</div>

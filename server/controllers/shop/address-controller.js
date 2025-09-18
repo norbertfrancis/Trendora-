@@ -2,13 +2,13 @@ const Address = require("../../models/Address");
 
 const addAddress = async (req, res) => {
   try {
-    const { userId, address, city, landMark, pincode, phone, notes } = req.body;
+    const { userId, address, city, landmark, pincode, phone, notes } = req.body;
 
     if (
       !userId ||
       !address ||
       !city ||
-      !landMark ||
+      !landmark ||
       !pincode ||
       !phone ||
       !notes
@@ -22,7 +22,7 @@ const addAddress = async (req, res) => {
       userId,
       address,
       city,
-      landMark,
+      landmark,
       pincode,
       phone,
       notes,
@@ -93,6 +93,10 @@ const editAddress = async (req, res) => {
         message: "Address not found",
       });
     }
+     res.status(200).json({
+    success: true,
+    data: address,
+  });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -100,10 +104,6 @@ const editAddress = async (req, res) => {
       message: "Error Occured",
     });
   }
-  res.status(200).json({
-    success: true,
-    data: address,
-  });
 };
 
 const deleteAddress = async (req, res) => {
