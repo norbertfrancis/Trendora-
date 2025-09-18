@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table";
+import { Table, TableBody, TableCell,TableHead, TableHeader, TableRow } from "../ui/table";
 
 function AdminOrdersView() {
   return (
@@ -12,10 +12,10 @@ function AdminOrdersView() {
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableRow>Order Id</TableRow>
-                    <TableRow>Order Data</TableRow>
-                    <TableRow>Order Status</TableRow>
-                    <TableRow>Order Price</TableRow>
+                    <TableHead>Order Id</TableHead>
+                    <TableHead>Order Data</TableHead>
+                    <TableHead>Order Status</TableHead>
+                    <TableHead>Order Price</TableHead>
                     <TableHead>
                         <span className="sr-only">Details</span>
                     </TableHead>
