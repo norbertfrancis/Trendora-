@@ -47,7 +47,7 @@ const MenuItems = () => {
 const HeaderRightContent = () => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
-  const [openCartSheet, setOpenCartSheets] = useState(false);
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -61,9 +61,9 @@ const HeaderRightContent = () => {
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       {/* take the dropDown menu */}
-      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheets(false)}>
+      <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
-          onClick={() => setOpenCartSheets(true)}
+          onClick={() => setOpenCartSheet(true)}
           variant="outline"
           size="icon"
         >
@@ -71,6 +71,7 @@ const HeaderRightContent = () => {
           <span className="sr-only">User cart</span>
         </Button>
         <UserCartWrapper
+          setOpenCartSheet={setOpenCartSheet}
           cartItems={
             cartItems && cartItems.items && cartItems.items.length > 0
               ? cartItems.items
