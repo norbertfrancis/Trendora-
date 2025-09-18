@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddressCard from "./address-card";
+import { useToast } from "@/hooks/use-toast";
 
 const initialAddressFormData = {
   address: "",
@@ -25,12 +26,20 @@ function Address() {
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { addressList } = useSelector((state) => state.shopAddress);
+  const {toast} = useToast()
 
   const dispatch = useDispatch();
 
   const handleManageAddress = (e) => {
     e.preventDefault();
-
+    if(addressList.length >= 3 && currentEditedId === null){
+      setFormData(initialAddressFormData)
+      toast({
+        title: 'You can add maximum 3 addresses',
+        variant : 'destructive'
+      })
+      return
+    }
     currentEditedId !== null
       ? dispatch(
           editaAddress({
@@ -43,6 +52,9 @@ function Address() {
             dispatch(fetchAllAddresses(user?.id));
             setCurrentEditedId(null);
             setFormData(initialAddressFormData);
+            toast({
+              title: 'Address updated successfully'
+            })
           }
         })
       : dispatch(
@@ -55,6 +67,9 @@ function Address() {
           if (data?.payload?.success) {
             dispatch(fetchAllAddresses(user?.id));
             setFormData(initialAddressFormData);
+            toast({
+              title: 'Address added successfully'
+            })
           }
         });
   };
@@ -64,6 +79,9 @@ function Address() {
     ).then((data) => {
       if (data?.payload?.success) {
         dispatch(fetchAllAddresses(user?.id));
+        toast({
+          title: 'Address deleted successfully'
+        })
       }
     });
   };

@@ -11,7 +11,7 @@ function UserCartWrapper({ cartItems }) {
             (currentItem?.salePrice > 0
               ? currentItem?.salePrice
               : currentItem?.price) *
-              currentItem?.quantity, 0
+              currentItem?.quantity, 0  
         )
       : 0;
 
