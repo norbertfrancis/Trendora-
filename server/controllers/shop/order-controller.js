@@ -70,7 +70,7 @@ const createOrder = async (req, res) => {
         await newlyCreatedOrder.save();
 
         const approvalURL = paymentInfo.links.find(
-          (link) => link.rel === "approval_url"
+          link => link.rel === "approval_url"
         ).href;
 
         res.status(201).json({
