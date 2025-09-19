@@ -1,38 +1,28 @@
-import { useState } from "react";
 import CommonForm from "../common/form";
 import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 
-const initialFormData = {
-  status: "",
-};
-
-function AdminOrdersDetailsView() {
-  const [formData, setFormData] = useState(initialFormData);
-
-  const handleUpdateStatus = (e) => {
-    e.preventDefault();
-  };
+function ShoppingOrderDetailsView() {
   return (
     <DialogContent className="sm:max-w-[600px]">
-      <div className="grid gap-6">
+      <div className="grid gap-4">
         <div className="grid gap-2">
-          <div className="flex mt-4 items-center justify-between">
+          <div className="flex mt-6 items-center justify-between">
             <p className="font-medium">Order ID</p>
-            <Label>123456</Label>
+            <Label>121212</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
             <p className="font-medium">Order Date</p>
-            <Label>18/09/2025</Label>
+            <Label>19.09.2025</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
             <p className="font-medium">Order Status</p>
             <Label>In Process</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
-            <p className="font-medium">Order Price</p>
-            <Label>12400</Label>
+            <p>Order Price</p>
+            <Label>12300</Label>
           </div>
         </div>
         <Separator />
@@ -42,7 +32,7 @@ function AdminOrdersDetailsView() {
             <ul className="grid gap-3">
               <li className="flex items-center justify-between">
                 <span>Product One</span>
-                <span>Rs 12400</span>
+                <span>Rs 12300</span>
               </li>
             </ul>
           </div>
@@ -51,7 +41,7 @@ function AdminOrdersDetailsView() {
           <div className="grid gap-4">
             <div className="font-medium">Shipping Info</div>
             <div className="grid gap-0.5 text-muted-foreground">
-              <span>David Mec</span>
+              <span>David Miller</span>
               <span>Address</span>
               <span>City</span>
               <span>Landmark</span>
@@ -61,31 +51,9 @@ function AdminOrdersDetailsView() {
             </div>
           </div>
         </div>
-        <div>
-          <CommonForm
-            formControls={[
-              {
-                label: "Order Status",
-                name: "status",
-                componentType: "select",
-                options: [
-                  { id: "pending", label: "Pending" },
-                  { id: "inProcess", label: "In Process" },
-                  { id: "inShipping", label: "In Shipping" },
-                  { id: "rejected", label: "Rejected" },
-                  { id: "delivered", label: "Delivered" },
-                ],
-              },
-            ]}
-            formData={formData}
-            setFormData={setFormData}
-            buttonText={"Update Order Status"}
-            onSubmit={handleUpdateStatus}
-          />
-        </div>
       </div>
     </DialogContent>
   );
 }
 
-export default AdminOrdersDetailsView;
+export default ShoppingOrderDetailsView;
