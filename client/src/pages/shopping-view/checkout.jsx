@@ -29,6 +29,7 @@ function ShoppingCheckout() {
   const handleInitiatePaypalPayment = () => {
     const orderData = {
       userId: user?.id,
+      cartId : cartItems?._id ,
       cartItems: cartItems.items.map((singleCartItem) => ({
         productId: singleCartItem?.productId,
         title: singleCartItem?.title,
