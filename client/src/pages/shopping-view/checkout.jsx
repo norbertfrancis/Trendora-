@@ -8,12 +8,12 @@ import { createNewOrder } from "@/store/shop/order-slice";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
-  const {user} = useSelector((state)=> state.auth)
-  const {approvalURL} = useSelector(state => state.shopOrder)
-  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null)
-  const [isPaymentStart, setIsPaymentStart] = useState(false)
-  const dispatch = useDispatch()
-    const totalCartAmount =
+  const { user } = useSelector((state) => state.auth);
+  const { approvalURL } = useSelector((state) => state.shopOrder);
+  const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
+  const [isPaymentStart, setIsPaymentStart] = useState(false);
+  const dispatch = useDispatch();
+  const totalCartAmount =
     cartItems && cartItems.items && cartItems.items.length > 0
       ? cartItems.items.reduce(
           (sum, currentItem) =>
@@ -27,48 +27,48 @@ function ShoppingCheckout() {
       : 0;
 
   const handleInitiatePaypalPayment = () => {
-        const orderData = {
-            userId : user?.id,
-            cartItems: cartItems.items.map(singleCartItem=> ({
-                    productId: singleCartItem?.productId,
-                    title: singleCartItem?.title,
-                    image: singleCartItem?.image,
-                    price: singleCartItem?.salePrice > 0 ? singleCartItem?.salePrice : singleCartItem.price,
-                    quantity : singleCartItem?.quantity
-                          })),
-            addressInfo: {
-              addressId: currentSelectedAddress?._id,
-              address: currentSelectedAddress?.address,
-              city:currentSelectedAddress?.city ,
-              landmark: currentSelectedAddress?.landmark,
-              pincode: currentSelectedAddress?.pincode,
-              phone: currentSelectedAddress?.phone,
-              notes: currentSelectedAddress?.notes,
-            },
-            orderStatus : 'pending', 
-            paymentMethod : 'paypal',
-            paymentStatus : 'pending',
-            totalAmount : totalCartAmount,
-            orderDate : new Date(),
-            orderUpdateDate : new Date(),
-            paymentId : '',
-            payerId : '',
-        }
-        dispatch(createNewOrder(orderData)).then((data) => {
-          console.log(data)
-          if(data?.payload?.success){
-            setIsPaymentStart(true)
-          }else {
-            setIsPaymentStart(false)
-          }
-        })
-      
-  } 
-  if(approvalURL){
+    const orderData = {
+      userId: user?.id,
+      cartItems: cartItems.items.map((singleCartItem) => ({
+        productId: singleCartItem?.productId,
+        title: singleCartItem?.title,
+        image: singleCartItem?.image,
+        price:
+          singleCartItem?.salePrice > 0
+            ? singleCartItem?.salePrice
+            : singleCartItem.price,
+        quantity: singleCartItem?.quantity,
+      })),
+      addressInfo: {
+        addressId: currentSelectedAddress?._id,
+        address: currentSelectedAddress?.address,
+        city: currentSelectedAddress?.city,
+        landmark: currentSelectedAddress?.landmark,
+        pincode: currentSelectedAddress?.pincode,
+        phone: currentSelectedAddress?.phone,
+        notes: currentSelectedAddress?.notes,
+      },
+      orderStatus: "pending",
+      paymentMethod: "paypal",
+      paymentStatus: "pending",
+      totalAmount: totalCartAmount,
+      orderDate: new Date(),
+      orderUpdateDate: new Date(),
+      paymentId: "",
+      payerId: "",
+    };
+    dispatch(createNewOrder(orderData)).then((data) => {
+      console.log(data);
+      if (data?.payload?.success) {
+        setIsPaymentStart(true);
+      } else {
+        setIsPaymentStart(false);
+      }
+    });
+  };
+  if (approvalURL) {
     window.location.href = approvalURL;
   }
-
-
 
   return (
     <div className="flex flex-col">
@@ -90,7 +90,9 @@ function ShoppingCheckout() {
             </div>
           </div>
           <div className="mt-4 w-full ">
-            <Button onClick={handleInitiatePaypalPayment} className="w-full">Checkout with Paypal</Button>
+            <Button onClick={handleInitiatePaypalPayment} className="w-full">
+              Checkout with Paypal
+            </Button>
           </div>
         </div>
       </div>

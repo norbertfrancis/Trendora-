@@ -13,7 +13,7 @@ const store = configureStore({
         shopProducts : shopProductsSlice,
         shopCart : shopCartSlice,
         shopAddress: shopAddressSlice,
-        shopeOrder : shopOrderSlice,
+        shopOrder : shopOrderSlice,
     },
 })
 
