@@ -9,14 +9,14 @@ function PaypalReturnPage() {
     const dispatch = useDispatch();
     const location = useLocation();
     const params = new URLSearchParams(location.search);
-    const payementId = params.get('payementId');
+    const paymentId = params.get('paymentId');
     const payerId = params.get('PayerID');
 
     useEffect(()=> {
-        if(payementId && payerId){
+        if(paymentId && payerId){
           const orderId = JSON.parse(sessionStorage.getItem('currentOrderId')); 
           
-          dispatch(capturePayment({payementId,payerId, orderId})).then(data=> {
+          dispatch(capturePayment({paymentId,payerId, orderId})).then(data=> {
             if(data?.payload?.success){
                 sessionStorage.removeItem('currentOrderId')
                 window.location.href = '/shop/payment-success'
@@ -24,7 +24,7 @@ function PaypalReturnPage() {
           })
         }
 
-    }, [payementId, payerId, dispatch])
+    }, [paymentId, payerId, dispatch])
 
 
     return ( 

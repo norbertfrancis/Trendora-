@@ -20,6 +20,7 @@ import { useEffect } from "react"
 import { checkAuth } from "./store/auth-slice"
 import {Skeleton} from "@/components/ui/skeleton"
 import PaypalReturnPage from "./pages/shopping-view/paypal-return"
+import PayementSuccessPage from "./pages/shopping-view/payment-success"
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
             <Route path="account" element={<ShoppingAccount/>}/>
             <Route path="checkout" element={<ShoppingCheckout/>}/>
             <Route path="paypal-return" element={<PaypalReturnPage/>}/>
+            <Route path="payment-success" element={<PayementSuccessPage/>}/>
 
         </Route>
          <Route path="/unauth-page" element={<UnauthPage/>}/>
