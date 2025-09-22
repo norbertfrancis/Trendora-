@@ -6,7 +6,7 @@ const initialState = {
   approvalURL: null,
   isLoading: false,
   orderId: null,
-  ordereList: [],
+  orderList: [],
   orderDetails: null,
 };
 
@@ -85,11 +85,11 @@ const shoppingOrderSlice = createSlice({
       })
       .addCase(getAllOrdersByUserId.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.ordereList = action.payload.data;
+        state.orderList = action.payload.data;
       })
       .addCase(getAllOrdersByUserId.rejected, (state) => {
         state.isLoading = false;
-        state.ordereList = [];
+        state.orderList = [];
       })
       .addCase(getOrderDetail.pending, (state) => {
         state.isLoading = true;
