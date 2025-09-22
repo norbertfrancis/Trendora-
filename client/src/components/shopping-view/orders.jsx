@@ -12,20 +12,29 @@ import {
 } from "../ui/table";
 import ShoppingOrderDetailsView from "./order-details";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrdersByUserId } from "@/store/shop/order-slice";
+import { getAllOrdersByUserId, getOrderDetail, resetOrderDetails } from "@/store/shop/order-slice";
 import { Badge } from "../ui/badge";
 
 function ShoppingOrders() {
 
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.auth);
-  const {orderList} = useSelector(state => state.shopOrder);
+  const {orderList, orderDetails} = useSelector(state => state.shopOrder);
+
+   const handleFetchOrderDetails = (getId) => {
+    dispatch(getOrderDetail(getId))
+  }
 
   useEffect(() => {
     dispatch(getAllOrdersByUserId(user?.id))
   },[dispatch])
 
-  console.log(orderList)
+  useEffect(() => {
+    if(orderDetails !== null) setOpenDetailsDialog(true)
+  },[orderDetails])
+ 
+
+  console.log(orderDetails, "orderDetails")
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   return (
     <Card>
@@ -51,19 +60,23 @@ function ShoppingOrders() {
               orderList.map((orderItem)=> 
               <TableRow>
               <TableCell>{orderItem?._id}</TableCell>
-              <TableCell>{orderItem?.orderDate.split('T')[0]}</TableCell>
+              <TableCell>{orderItem?.orderDate ? orderItem.orderDate.split('T')[0] : '-'}</TableCell>
+
               <TableCell><Badge className={`py-1 px-3 ${orderItem?.orderStatus === 'confirmed' ? 'bg-green-500' : 'bg-black'}`}>{orderItem?.orderStatus}</Badge>
                 </TableCell>
               <TableCell>{orderItem?.totalAmount}</TableCell>
               <TableCell>
                 <Dialog
                   open={openDetailsDialog}
-                  onOpenChange={setOpenDetailsDialog}
+                  onOpenChange={()=> {
+                    setOpenDetailsDialog(false)
+                    dispatch(resetOrderDetails())
+                  }}
                 >
-                  <Button onClick={() => setOpenDetailsDialog(true)}>
+                  <Button onClick={()=>handleFetchOrderDetails(orderItem?._id)}>
                     View Details
                   </Button>
-                  <ShoppingOrderDetailsView />
+                  <ShoppingOrderDetailsView orderDetails={orderDetails} />
                 </Dialog>
               </TableCell>
             </TableRow>) : null
