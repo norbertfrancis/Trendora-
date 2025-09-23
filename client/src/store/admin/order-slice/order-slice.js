@@ -1,4 +1,5 @@
- import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios";
 
 const initialState = {
@@ -10,7 +11,7 @@ const initialState = {
     "/order/getAllOrdersForAdmin",
     async () => {
         const response = await axios.get(
-            `http://localhost:5000/api/admin/orders/get`
+            `http://localhost:5000/api/admin/orders`
         );
         return response.data;
     }
@@ -20,7 +21,7 @@ const initialState = {
     "/order/getOrderDetailsForAdmin",
     async (id) => {
         const response = await axios.get(
-            `http://localhost:5000/api/admin/orders/details/${id}`
+            `http://localhost:5000/api/admin/orders/${id}`
         )
         return response.data
     }
@@ -29,13 +30,17 @@ const initialState = {
  const adminOrderSlice = createSlice({
     name : 'adminOrderSlice' ,
     initialState ,
-    reducers : {},
+    reducers : {
+       resetOrderDetails:(state)=> {
+        state.orderDetails = null
+       }
+    },
     extraReducers: (builder)=> {
         builder.addCase(getALlOrdersForAdmin.pending, (state)=> {
             state.isLoading = true
         }).addCase(getALlOrdersForAdmin.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.orderList = action.payload.data
+            state.orderList = action.payload.datan || []
         }).addCase(getALlOrdersForAdmin.rejected, (state)=> {
             state.isLoading = false;
             state.orderList = []
@@ -51,5 +56,5 @@ const initialState = {
     },
  });
 
-
+export const {resetOrderDetails} = adminOrderSlice.actions;
  export default adminOrderSlice.reducer

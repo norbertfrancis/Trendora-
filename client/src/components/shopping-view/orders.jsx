@@ -28,6 +28,7 @@ function ShoppingOrders() {
   useEffect(() => {
     dispatch(getAllOrdersByUserId(user?.id))
   },[dispatch])
+  
 
   useEffect(() => {
     if(orderDetails !== null) setOpenDetailsDialog(true)
