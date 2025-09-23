@@ -6,8 +6,8 @@ import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 
 function ShoppingOrderDetailsView({ orderDetails }) {
+  const { user } = useSelector((state) => state.auth);
 
-  const {user} = useSelector(state => state.auth)
   return (
     <DialogContent className="sm:max-w-[600px]">
       <div className="grid gap-4">
@@ -24,7 +24,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             <p className="font-medium">Order Status</p>
             <Label>
               <Badge
-                className={`py-1 px-3 ${
+                className={`py-1 px-3 ${ 
                   orderDetails?.orderStatus === "confirmed"
                     ? "bg-green-500"
                     : "bg-black"
@@ -35,8 +35,17 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             </Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
-            <p>Order Price</p>
+            <p className="font-medium">Order Price</p>
             <Label>{orderDetails?.totalAmount}</Label>
+          </div>
+          <div className="flex mt-1 items-center justify-between">
+                <p className="font-medium">Payment method</p>
+                <Label>{orderDetails?.paymentMethod}</Label>
+          </div>
+          <div className="flex mt-1 items-center justify-between">
+            <p className="font-medium">Payment status</p>
+            <Label>{orderDetails?.paymentStatus}</Label>
+
           </div>
         </div>
         <Separator />
@@ -62,16 +71,17 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             <div className="grid gap-0.5 text-muted-foreground">
               <span>{user?.userName}</span>
               {orderDetails?.addressInfo ? (
-  <>
-    <span>{orderDetails.addressInfo.address}</span>
-    <span>{orderDetails.addressInfo.city}</span>
-    <span>{orderDetails.addressInfo.landmark}</span>
-    <span>{orderDetails.addressInfo.pincode}</span>
-    <span>{orderDetails.addressInfo.phone}</span>
-    <span>{orderDetails.addressInfo.notes}</span>
-  </>
-) : <span>No address info</span>}
-
+                <>
+                  <span>{orderDetails?.addressInfo?.address}</span>
+                  <span>{orderDetails?.addressInfo?.city}</span>
+                  <span>{orderDetails?.addressInfo?.landmark}</span>
+                  <span>{orderDetails?.addressInfo?.pincode}</span>
+                  <span>{orderDetails?.addressInfo?.phone}</span>
+                  <span>{orderDetails?.addressInfo?.notes}</span>
+                </>
+              ) : (
+                <span>No address info</span>
+              )}
             </div>
           </div>
         </div>

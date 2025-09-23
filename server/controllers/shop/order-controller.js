@@ -93,33 +93,31 @@ const createOrder = async (req, res) => {
 };
 
 const capturePayment = async (req, res) => {
-  const { paymentId, payerId, orderId } = req.body;
-
-  let order = await Order.findById(orderId);
-
-  if (!order) {
-    return res.status(404).json({
-      success: false,
-      message: "Order cannot be found",
-    });
-  }
-  order.paymentStatus = "paid";
-  order.orderStatus = "confirmed";
-  order.paymentId = paymentId;
-  order.payerId = payerId;
-
-  const getCartId = order.cartId;
-  await Cart.findByIdAndDelete(getCartId);
-
-  await order.save();
-
-  res.status(200).json({
-    success: true,
-    message: "Order confirmed",
-    data: order,
-  });
-
   try {
+    const { paymentId, payerId, orderId } = req.body;
+
+    let order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order cannot be found",
+      });
+    }
+    order.paymentStatus = "paid";
+    order.orderStatus = "confirmed";
+    order.paymentId = paymentId;
+    order.payerId = payerId;
+
+    const getCartId = order.cartId;
+    await Cart.findByIdAndDelete(getCartId);
+
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Order confirmed",
+      data: order,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -156,21 +154,20 @@ const getAllOrdersByUser = async (req, res) => {
 
 const getOrderDetail = async (req, res) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const order = await Order.findById(id);
 
-    if(!order) {
+    if (!order) {
       return res.status(404).json({
-        success : false,
-        message : 'order not found'
-      })
+        success: false,
+        message: "order not found",
+      });
     }
     res.status(200).json({
-      success : true,
-      data : order
-    })
-
+      success: true,
+      data: order,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
