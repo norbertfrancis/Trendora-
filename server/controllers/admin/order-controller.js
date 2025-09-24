@@ -1,6 +1,6 @@
 const Order = require("../../models/Order");
 
-const getALlOrdersOfUsers = async (req, res) => {
+const getAllOrdersOfUsers = async (req, res) => {
   try {
     const orders = await Order.find({});
 
@@ -67,7 +67,6 @@ const updateOrderStatus = async(req, res) => {
       message : "Order status is updated successfully!"
     })
 
-
     
   } catch (error) {
     console.log(error)
@@ -78,4 +77,4 @@ const updateOrderStatus = async(req, res) => {
   }
 }
 
-module.exports = { getALlOrdersOfUsers, getOrderDetailsForAdmin, updateOrderStatus };
+module.exports = { getAllOrdersOfUsers, getOrderDetailsForAdmin, updateOrderStatus };

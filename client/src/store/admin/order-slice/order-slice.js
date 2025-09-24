@@ -9,7 +9,7 @@ const initialState = {
 export const getALlOrdersForAdmin = createAsyncThunk(
   "/order/getAllOrdersForAdmin",
   async () => {
-    const response = await axios.get(`http://localhost:5000/api/admin/get`);
+    const response = await axios.get(`http://localhost:5000/api/admin/orders/get`);
     return response.data;
   }
 );
@@ -52,7 +52,7 @@ const adminOrderSlice = createSlice({
       })
       .addCase(getALlOrdersForAdmin.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orderList = action.payload.datan || [];
+        state.orderList = action.payload.data || [];
       })
       .addCase(getALlOrdersForAdmin.rejected, (state) => {
         state.isLoading = false;

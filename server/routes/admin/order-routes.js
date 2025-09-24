@@ -1,8 +1,8 @@
 const express = require('express');
-const { getALlOrdersOfUsers, getOrderDetailsForAdmin, updateOrderStatus } = require('../../controllers/admin/order-controller');
+const { getAllOrdersOfUsers, getOrderDetailsForAdmin, updateOrderStatus } = require('../../controllers/admin/order-controller');
 const router = express.Router();
 
-router.get("/get", getALlOrdersOfUsers);
+router.get("/get", getAllOrdersOfUsers);
 router.get("/details/:id", getOrderDetailsForAdmin);
 router.put("/update/:id", updateOrderStatus)
 
