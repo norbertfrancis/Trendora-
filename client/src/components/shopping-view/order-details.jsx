@@ -18,16 +18,22 @@ function ShoppingOrderDetailsView({ orderDetails }) {
           </div>
           <div className="flex mt-1 items-center justify-between">
             <p className="font-medium">Order Date</p>
-            <Label>{orderDetails?.orderDate.split("T")[0]}</Label>
+            <Label>
+              {orderDetails?.orderDate
+                ? orderDetails.orderDate.split("T")[0]
+                : "-"}
+            </Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
             <p className="font-medium">Order Status</p>
             <Label>
               <Badge
-                className={`py-1 px-3 ${ 
+                className={`py-1 px-3 ${
                   orderDetails?.orderStatus === "confirmed"
-                    ? "bg-green-500"
-                    : "bg-black"
+                            ? "bg-green-500"
+                            : orderDetails?.orderStatus === "rejected"
+                            ? "bg-red-600"
+                            : "bg-black"
                 }`}
               >
                 {orderDetails?.orderStatus}
@@ -39,13 +45,12 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             <Label>{orderDetails?.totalAmount}</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
-                <p className="font-medium">Payment method</p>
-                <Label>{orderDetails?.paymentMethod}</Label>
+            <p className="font-medium">Payment method</p>
+            <Label>{orderDetails?.paymentMethod}</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
             <p className="font-medium">Payment status</p>
             <Label>{orderDetails?.paymentStatus}</Label>
-
           </div>
         </div>
         <Separator />
