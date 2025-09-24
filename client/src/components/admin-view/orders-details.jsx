@@ -4,19 +4,36 @@ import { DialogContent } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getALlOrdersForAdmin,
+  getOrderDetailsForAdmin,
+  updateOrderStatus,
+} from "@/store/admin/order-slice/order-slice";
 
 const initialFormData = {
   status: "",
 };
 
-function AdminOrdersDetailsView({orderDetails}) {
+function AdminOrdersDetailsView({ orderDetails }) {
   const [formData, setFormData] = useState(initialFormData);
 
-  const {user} = useSelector(state => state.auth)
+  const { user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const handleUpdateStatus = (e) => {
     e.preventDefault();
+    const { status } = formData;
+    dispatch(
+      updateOrderStatus({ id: orderDetails?._id, orderStatus: status })
+    ).then((data) => {
+      if (data?.payload?.success) {
+        dispatch(getOrderDetailsForAdmin(orderDetails?._id));
+        dispatch(getALlOrdersForAdmin())
+        setFormData(initialFormData);
+      }
+    });
   };
   return (
     <DialogContent className="sm:max-w-[600px]">
@@ -34,7 +51,7 @@ function AdminOrdersDetailsView({orderDetails}) {
             <p className="font-medium">Order Status</p>
             <Label>
               <Badge
-                className={`py-1 px-3 ${ 
+                className={`py-1 px-3 ${
                   orderDetails?.orderStatus === "confirmed"
                     ? "bg-green-500"
                     : "bg-black"
@@ -49,13 +66,12 @@ function AdminOrdersDetailsView({orderDetails}) {
             <Label>{orderDetails?.totalAmount}</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
-                <p className="font-medium">Payment method</p>
-                <Label>{orderDetails?.paymentMethod}</Label>
+            <p className="font-medium">Payment method</p>
+            <Label>{orderDetails?.paymentMethod}</Label>
           </div>
           <div className="flex mt-1 items-center justify-between">
             <p className="font-medium">Payment status</p>
             <Label>{orderDetails?.paymentStatus}</Label>
-
           </div>
         </div>
         <Separator />
