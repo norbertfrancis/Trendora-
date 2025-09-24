@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { House, LogOut, Menu, ShoppingCart, UserIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
@@ -20,23 +20,32 @@ import { fetchCartItems } from "@/store/shop/cart-slice/cart-slice";
 import { Label } from "../ui/label";
 
 const MenuItems = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const handleNavigate = (getCurrentMenuItem) => {
-    sessionStorage.removeItem('filters')
-    const currentFilter = getCurrentMenuItem.id !== 'home' ? 
-    {
-      category : [getCurrentMenuItem.id]
-    } : null
+    sessionStorage.removeItem("filters");
+    const currentFilter =
+      getCurrentMenuItem.id !== "home" && getCurrentMenuItem.id !== "products"
+        ? {
+            category: [getCurrentMenuItem.id],
+          }
+        : null;
 
-    sessionStorage.setItem('filters', JSON.stringify(currentFilter))
-    navigate(getCurrentMenuItem.path)
-  }
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+    location.pathname.includes('listing') && currentFilter !== null ? 
+    setSearchParams(new URLSearchParams(`?category=${getCurrentMenuItem.id}`)) :
+    navigate(getCurrentMenuItem.path);
+  };
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItmes.map((menuItem) => (
-        <Label onClick={() => handleNavigate(menuItem)} className="text-sm font-medium cursor-pointer" key={menuItem.id}>
+        <Label
+          onClick={() => handleNavigate(menuItem)}
+          className="text-sm font-medium cursor-pointer"
+          key={menuItem.id}
+        >
           {menuItem.label}
         </Label>
       ))}
