@@ -64,7 +64,7 @@ function ShoppingProductTile({
         >
           Out of Stock
         </Button> : <Button
-          onClick={() => handleAddToCart(product?._id)}
+          onClick={() => handleAddToCart(product?._id, product?.totalStock)}
           className="w-full"
         >
           Add to cart
