@@ -51,6 +51,14 @@ const addProductReview = async(req, res) => {
 
 const getProductReviews = async(req, res) => {
     try {
+        const {productId} = req.params;
+
+        const reviews = await ProductReview.find({productId});
+
+        res.status(200).json({
+            success : true,
+            data : reviews
+        })
         
     } catch (error) {
         console.log(error)
