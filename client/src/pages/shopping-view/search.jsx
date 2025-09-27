@@ -1,3 +1,4 @@
+import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import ShoppingProductTile from "@/components/shopping-view/product-tile";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -15,10 +16,13 @@ function SearchProducts() {
   const [keyword, setKeyword] = useState("");
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
   const dispatch = useDispatch();
   const { searchResults } = useSelector((state) => state.shopSearch);
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
+  const { productDetails } = useSelector((state) => state.shopProducts);
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -93,7 +97,7 @@ function SearchProducts() {
           />
         </div>
       </div>
-      {searchResults.length ? (
+      {!searchResults.length && keyword.trim().length >= 3 ? (
         <h1 className="text-5xl font-extrabold">No result found!</h1>
       ) : null}
 
