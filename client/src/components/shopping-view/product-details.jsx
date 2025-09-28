@@ -8,15 +8,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice/cart-slice";
 import { useToast } from "@/hooks/use-toast";
 import { setProductDetails } from "@/store/shop/product-slice";
+import { Label } from "../ui/label";
+import StarRatingComponent from "../common/star-rating";
+import { useState } from "react";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
+  const [reviewMsg, setReviewMsg] = useState("");
+  const [rating, setRating] = useState(0);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const {cartItems} = useSelector((state)=> state.shopCart)
+  const { cartItems } = useSelector((state) => state.shopCart);
   const { toast } = useToast();
 
+  const handleRatingChange = (getRating) => {
+    setRating(getRating);
+  };
+
   const handleAddToCart = (getCurrentProductId, getTotalStock) => {
-        let getCartItems = cartItems.items || [];
+    let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
@@ -101,21 +110,18 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <span className="text-muted-foreground">{4.5}</span>
           </div>
           <div className="mt-5 mb-5">
-            {
-                productDetails?.totalStock === 0 ?
-                <Button
-              className="w-full opacity-60 cursor-not-allowed"
-            >
-              Out of Stock
-            </Button> : 
-            <Button
-              className="w-full"
-              onClick={() => handleAddToCart(productDetails?._id)}
-            >
-              Add to Cart
-            </Button>
-            }
-            
+            {productDetails?.totalStock === 0 ? (
+              <Button className="w-full opacity-60 cursor-not-allowed">
+                Out of Stock
+              </Button>
+            ) : (
+              <Button
+                className="w-full"
+                onClick={() => handleAddToCart(productDetails?._id)}
+              >
+                Add to Cart
+              </Button>
+            )}
           </div>
           <Separator />
           <div className="max-h-[300px] overflow-auto">
@@ -142,8 +148,20 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                 </div>
               </div>
             </div>
-            <div className="mt-6 flex gap-2">
-              <Input placeholder="Write a review..." />
+            <div className="mt-10 flex-col flex gap-2">
+              <Label>Write a review</Label>
+              <div className="flex">
+                <StarRatingComponent
+                  rating={rating}
+                  handleRatingChange={handleRatingChange}
+                />
+              </div>
+              <Input
+                name="reviewMsg"
+                value={reviewMsg}
+                onChange={(event) => setReviewMsg(event.target.value)}
+                placeholder="Write a review..."
+              />
               <Button>Submit</Button>
             </div>
           </div>
