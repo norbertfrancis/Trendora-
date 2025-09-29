@@ -7,7 +7,7 @@ const addProductReview = async (req, res) => {
     const { productId, userId, userName, reviewMessage, reviewValue } =
       req.body;
 
-    const order = await findOne({
+    const order = await Order.findOne({
       userId,
       "cartItems.productId": productId,
       orderStatus: "confirmed",
@@ -40,7 +40,7 @@ const addProductReview = async (req, res) => {
     const reviews = await ProductReview.find({ productId });
     const totalReviewLength = reviews.length;
     const averageReview =
-      reviews.reduce((sum, reviewItem) => sum + reviewItem, 0) /
+      reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
       totalReviewLength;
 
     await Product.findByIdAndUpdate(productId, { averageReview });
