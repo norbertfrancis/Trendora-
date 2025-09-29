@@ -21,24 +21,24 @@ const initialAddressFormData = {
   notes: "",
 };
 
-function Address({setCurrentSelectedAddress}) {
+function Address({ setCurrentSelectedAddress, selectedId }) {
   const [formData, setFormData] = useState(initialAddressFormData);
   const [currentEditedId, setCurrentEditedId] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const { addressList } = useSelector((state) => state.shopAddress);
-  const {toast} = useToast()
+  const { toast } = useToast();
 
   const dispatch = useDispatch();
 
   const handleManageAddress = (e) => {
     e.preventDefault();
-    if(addressList.length >= 3 && currentEditedId === null){
-      setFormData(initialAddressFormData)
+    if (addressList.length >= 3 && currentEditedId === null) {
+      setFormData(initialAddressFormData);
       toast({
-        title: 'You can add maximum 3 addresses',
-        variant : 'destructive'
-      })
-      return
+        title: "You can add maximum 3 addresses",
+        variant: "destructive",
+      });
+      return;
     }
     currentEditedId !== null
       ? dispatch(
@@ -53,8 +53,8 @@ function Address({setCurrentSelectedAddress}) {
             setCurrentEditedId(null);
             setFormData(initialAddressFormData);
             toast({
-              title: 'Address updated successfully'
-            })
+              title: "Address updated successfully",
+            });
           }
         })
       : dispatch(
@@ -68,8 +68,8 @@ function Address({setCurrentSelectedAddress}) {
             dispatch(fetchAllAddresses(user?.id));
             setFormData(initialAddressFormData);
             toast({
-              title: 'Address added successfully'
-            })
+              title: "Address added successfully",
+            });
           }
         });
   };
@@ -80,8 +80,8 @@ function Address({setCurrentSelectedAddress}) {
       if (data?.payload?.success) {
         dispatch(fetchAllAddresses(user?.id));
         toast({
-          title: 'Address deleted successfully'
-        })
+          title: "Address deleted successfully",
+        });
       }
     });
   };
@@ -114,6 +114,7 @@ function Address({setCurrentSelectedAddress}) {
         {addressList && addressList.length > 0
           ? addressList.map((singleAddressItem) => (
               <AddressCard
+                selectedId={selectedId}
                 handleDeleteAddress={handleDeleteAddress}
                 addressInfo={singleAddressItem}
                 handleEditAddress={handleEditAddress}
