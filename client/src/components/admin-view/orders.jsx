@@ -18,10 +18,19 @@ import {
   resetOrderDetails,
 } from "@/store/admin/order-slice/order-slice";
 import { Badge } from "../ui/badge";
+import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 
 function AdminOrdersView() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const { orderList, orderDetails } = useSelector((state) => state.adminOrder);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  const paginationOrder = orderList?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const totalPages = Math.ceil((orderList?.length || 0) / itemsPerPage);
 
   const dispatch = useDispatch();
 
@@ -56,8 +65,8 @@ function AdminOrdersView() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orderList && orderList.length > 0
-              ? orderList.map((orderItem) => (
+            {paginationOrder && paginationOrder.length > 0
+              ? paginationOrder.map((orderItem) => (
                   <TableRow>
                     <TableCell>{orderItem?._id}</TableCell>
                     <TableCell>
@@ -103,6 +112,46 @@ function AdminOrdersView() {
               : null}
           </TableBody>
         </Table>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) setCurrentPage(currentPage - 1);
+                }}
+              />
+            </PaginationItem>
+
+            {[...Array(totalPages)].map((_, idx) => (
+              <PaginationItem key={idx}>
+                <PaginationLink
+                  href="#"
+                  isActive={currentPage === idx + 1}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setCurrentPage(idx + 1);
+                  }}
+                >
+                  {idx + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            {totalPages > 5 && <PaginationEllipsis />}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </CardContent>
     </Card>
   );
