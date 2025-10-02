@@ -38,7 +38,7 @@ const commonSlice = createSlice({
       })
       .addCase(getFeatureImages.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.featureImageList = action.payload.data;
+        state.featureImageList = action.payload.data.filter(item => item.image);
       })
       .addCase(getFeatureImages.rejected, (state) => {
         state.isLoading = false;
